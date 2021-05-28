@@ -99,25 +99,25 @@ leagues, you can do so like this:
 sfb_adds <- arrow::open_dataset("scottfishbowl/transactions/") %>% 
   filter(type_desc == "added", year == 2020, sfb_type == "official") %>% 
   arrange(desc(bbid_spent)) %>% 
-  select(league_id, timestamp, player_id, player_name, pos, team, bbid_spent, franchise_id, franchise_name) %>% 
+  select(league_id, player_id, player_name, pos, team, bbid_spent, franchise_id, franchise_name, timestamp) %>% 
   collect()
 
 sfb_adds
 #> # A tibble: 20,400 x 9
-#>    league_id timestamp           player_id player_name     pos   team 
-#>        <int> <dttm>              <chr>     <chr>           <chr> <chr>
-#>  1     13411 2020-11-18 18:00:00 14811     Ahmed, Salvon   RB    MIA  
-#>  2     13411 2020-10-15 17:00:00 10313     Dalton, Andy    QB    DAL  
-#>  3     13411 2020-10-15 17:00:00 14265     Fulgham, Travis WR    PHI  
-#>  4     13411 2020-10-15 17:00:00 10313     Dalton, Andy    QB    DAL  
-#>  5     16428 2020-09-09 17:00:00 14096     Ozigbo, Devine  RB    JAC  
-#>  6     17910 2020-12-09 18:00:00 14095     Johnson, Ty     RB    NYJ  
-#>  7     17910 2020-10-15 17:00:00 10313     Dalton, Andy    QB    DAL  
-#>  8     17910 2020-10-15 17:00:00 10313     Dalton, Andy    QB    DAL  
-#>  9     17910 2020-09-30 17:00:00 14065     Rypien, Brett   QB    DEN  
-#> 10     17910 2020-09-09 17:00:00 14813     Robinson, James RB    JAC  
-#> # ... with 20,390 more rows, and 3 more variables: bbid_spent <dbl>,
-#> #   franchise_id <chr>, franchise_name <chr>
+#>    league_id player_id player_name     pos   team  bbid_spent franchise_id
+#>        <int> <chr>     <chr>           <chr> <chr>      <dbl> <chr>       
+#>  1     13411 14811     Ahmed, Salvon   RB    MIA          100 0041        
+#>  2     13411 10313     Dalton, Andy    QB    DAL          100 0063        
+#>  3     13411 14265     Fulgham, Travis WR    PHI          100 0051        
+#>  4     13411 10313     Dalton, Andy    QB    DAL          100 0055        
+#>  5     16428 14096     Ozigbo, Devine  RB    JAC          100 0062        
+#>  6     17910 14095     Johnson, Ty     RB    NYJ          100 0059        
+#>  7     17910 10313     Dalton, Andy    QB    DAL          100 0057        
+#>  8     17910 10313     Dalton, Andy    QB    DAL          100 0001        
+#>  9     17910 14065     Rypien, Brett   QB    DEN          100 0093        
+#> 10     17910 14813     Robinson, James RB    JAC          100 0032        
+#> # ... with 20,390 more rows, and 2 more variables: franchise_name <chr>,
+#> #   timestamp <dttm>
 ```
 
 ## Contributing
@@ -133,8 +133,8 @@ are some ways you can contribute to this project:
     costs](https://github.com/sponsors/tanho63)!
 
 Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/DynastyProcess/data/blob/master/CODE_OF_CONDUCT.md)
-- by participating, you agree to abide by these terms.
+Conduct](https://github.com/DynastyProcess/data/blob/master/CODE_OF_CONDUCT.md) - 
+by participating, you agree to abide by these terms.
 
 ## Terms of Use
 

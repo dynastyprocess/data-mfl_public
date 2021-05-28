@@ -77,7 +77,7 @@ Arrow is very useful because you can pass filters, sorts, and selects to the dat
 sfb_adds <- arrow::open_dataset("scottfishbowl/transactions/") %>% 
   filter(type_desc == "added", year == 2020, sfb_type == "official") %>% 
   arrange(desc(bbid_spent)) %>% 
-  select(league_id, timestamp, player_id, player_name, pos, team, bbid_spent, franchise_id, franchise_name) %>% 
+  select(league_id, player_id, player_name, pos, team, bbid_spent, franchise_id, franchise_name, timestamp) %>% 
   collect()
 
 sfb_adds
