@@ -1,0 +1,99 @@
+---
+output: github_document
+---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(pillar.min_chars = 50)
+
+```
+
+# Public MFL League Data
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This repository contains MFL data gathered via [ffscrapr](https://github.com/dynastyprocess/ffscrapr) and stored as [Apache Arrow](https://arrow.apache.org/docs/r/articles/arrow.html)'s Parquet files. 
+
+Usage instructions currently written out in R - if you use a different programming language, I would gladly take a PR with parallel instructions! 
+
+## Contents
+
+There are currently two included datasets: SafeLeagues data (2019-2020) and ScottFishBowl data (2016-2020). 
+
+Within each of these, you will find subfolders:
+
+- `league`: contains a table summarising features about the leagues within the dataset such as scoring_flags, best_ball, idp, qb_type, player_copies, league_size.
+- `draft`: contains the most recent draft for that league year
+- `standings`: contains season-finish data, including H2H/All-Play win records, points for, potential points etc
+- `starters`: contains the starters for each week of the regular season
+- `transactions`: contains all public transaction data (adds, drops, trades, blind bidding etc)
+
+## Install (R)
+
+You will need to clone or download this repository to your machine in order to use this data (as of this writing). You can do this via the buttons above, or by running this command in a terminal. 
+
+```
+git clone https://www.github.com/dynastyprocess/data-mfl_public.git
+
+```
+
+The Arrow R package can be installed with:
+
+```{r eval = FALSE}
+install.packages("arrow")
+# or, if that gives you problems, I usually can get the nightly version to work a little better
+install.packages("arrow", repos = "https://arrow-r-nightly.s3.amazonaws.com")
+```
+If both of these give you problems, please see the official arrow help for installation here: [https://arrow.apache.org/docs/r/articles/install.html](https://arrow.apache.org/docs/r/articles/install.html))
+
+## Usage (R)
+
+Each subfolder (i.e. `scottfishbowl/draft`) is designed to be opened as a multi-file Arrow dataset. 
+
+Here's an example of accessing the league summary table:
+
+```{r}
+suppressPackageStartupMessages({
+  library(arrow)
+  library(dplyr)
+})
+
+safeleagues_leagues <- arrow::open_dataset("safeleagues/league/") %>% 
+  dplyr::collect()
+
+safeleagues_leagues
+```
+
+Arrow is very useful because you can pass filters, sorts, and selects to the dataset `before` loading it into memory. For example, if you want to look at waiver wire adds (and not drops) in Scott Fish Bowl's 2020 leagues, you can do so like this:
+
+```{r}
+
+sfb_adds <- arrow::open_dataset("scottfishbowl/transactions/") %>% 
+  filter(type_desc == "added", year == 2020, sfb_type == "official") %>% 
+  arrange(desc(bbid_spent)) %>% 
+  select(league_id, timestamp, player_id, player_name, pos, team, bbid_spent, franchise_id, franchise_name) %>% 
+  collect()
+
+sfb_adds
+```
+
+
+## Contributing
+
+Many hands make light work, especially when maintaining open data! Here are some ways you can contribute to this project:
+
+- You can [open an issue](https://github.com/DynastyProcess/data-mfl_public/issues/new) if you'd like to request specific data or report a bug/error. 
+
+- You can [sponsor this project by donating to help with server costs](https://github.com/sponsors/tanho63)!
+
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/DynastyProcess/data/blob/master/CODE_OF_CONDUCT.md) - by participating, you agree to abide by these terms.
+
+## Terms of Use
+
+This data is released under CC0. 
